@@ -22,15 +22,16 @@
         
 
         <!-- Notes card -->
-        <div class="flex grid sm:grid-cols-2 md:grid-cols-3 gap-4 m-4 mt-3 mx-auto">
+        <div class="flex flex-wrap gap-5 p-6">
+
             @for(noteData of notes; track noteData.id){
-                <div class="min-w-0 p-4 border rounded-3xl shadow notes-card">
+                <div class="w-80 p-4 border rounded-3xl shadow notes-card">
                     <h4 class="ms-4">
                         {{noteData.title}} 
                         <!-- <i class="bi bi-pin-angle font-semibold bg-white p-1 ms-10 rounded-circle text-lg"></i> -->
                     </h4>
         
-                    <div class="flex justify-evenly pt-3 ms-3">
+                    <div class="flex justify-evenly pt-5 ms-3">
                         <i (click)="viewNote(noteData)" class="bi bi-eye-fill cursor-pointer text-xl"></i>
                         <i (click)="deleteNotes(noteData.id)" class="bi bi-trash cursor-pointer text-xl"></i>
                         <i (click)="editNotes(noteData)"
@@ -42,10 +43,10 @@
         
     </div>
 
-    <div class="w-110 md:w-80 bg-orange-500">
+    <div class="w-110 md:w-70 m-2 md:m-0 bg-orange-500">
         @if (isView) {
         <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div class="bg-white p-2 md:p-5 rounded-lg shadow-lg w-90 sm:w-1/2 max-h-[80vh] overflow-y-auto">
+            <div class="bg-white p-5 md:p-5 rounded-lg shadow-lg w-90 sm:w-1/2 max-h-[80vh] overflow-y-auto">
                 <h3 class="text-lg font-semibold">{{ isView.title }}</h3>
                 <p class="mt-2">{{ isView.content }}</p>
                 <div class="w-30 h-10 border rounded-lg flex items-center justify-center bg-orange-300 hover:bg-orange-400 mt-4">
