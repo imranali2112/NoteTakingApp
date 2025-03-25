@@ -33,12 +33,13 @@ export class NoteFormComponent {
       id:new Date().getTime(),
       title:['',[Validators.required, Validators.pattern("^(?!^[0-9\s]+$)[A-Za-z0-9'\\s]+$"
       )]],
-      content:['',[Validators.required, Validators.pattern("^(?!^[0-9\s]+$)[A-Za-z0-9'\\s]+$")]]
+      content:['',[Validators.required, Validators.minLength(25), Validators.pattern("^(?!^[0-9\s]+$)[A-Za-z0-9'\\s]+$")]],
     });
   }
 
   onSubmit():void{
     if(this.noteForm.invalid){
+      this.noteForm.markAllAsTouched(); 
       return;
     }
     const note: Note = this.noteForm.value;
