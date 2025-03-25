@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  email =" query@takingapp.com";
+  email ="imranali23322@gmail.com";
 }

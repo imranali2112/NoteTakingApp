@@ -17,44 +17,83 @@ import { Note } from '../../interfaces/note';
 })
 export class NoteFormComponent {
   noteForm!: FormGroup;
-  @Input() selectedNotes!: Note;
-  isEdit:boolean = false;
-  sucessMessage:string | null = null;
+  isEdit: boolean = false;
+  successMessage: string | null = null;
+  selectedNote: Note | null = null;
 
   @Output() close = new EventEmitter<void>();
-  constructor(private noterService:NoteService, private formBulider:FormBuilder){
-    this.noterService.getEditable().subscribe({
-      next: (response)=>(this.isEdit = response)
-    })
-  }
 
-  ngOnInit():void{
-    this.noteForm = this.formBulider.group({
-      id:new Date().getTime(),
-      title:['',[Validators.required, Validators.pattern("^(?!^[0-9\s]+$)[A-Za-z0-9'\\s]+$"
-      )]],
-      content:['',[Validators.required, Validators.minLength(25), Validators.pattern("^(?!^[0-9\s]+$)[A-Za-z0-9'\\s]+$")]],
+  constructor(
+    private noteService: NoteService,
+    private formBuilder: FormBuilder
+  ) {
+    this.noteService.getEditable().subscribe({
+      next: (response) => (this.isEdit = response),
     });
   }
 
-  onSubmit():void{
-    if(this.noteForm.invalid){
-      this.noteForm.markAllAsTouched(); 
+  ngOnInit(): void {
+    this.noteForm = this.formBuilder.group({
+      id: new FormControl(null),
+      title: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern("^(?!^[0-9\\s]+$)[A-Za-z0-9'\\s]+$"),
+        ],
+      ],
+      content: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(25),
+          Validators.pattern("^(?!^[0-9\\s]+$)[A-Za-z0-9'\\s]+$"),
+        ],
+      ],
+    });
+
+    this.noteService.getEditable().subscribe({
+      next: (response) => (this.isEdit = response),
+    });
+
+    this.noteService.getSelectedNote().subscribe({
+      next: (note) => {
+        if (note) {
+          this.selectedNote = note;
+          this.noteForm.patchValue(note); 
+        }
+      },
+    });
+  }
+
+  onSubmit(): void {
+    if (this.noteForm.invalid) {
+      this.noteForm.markAllAsTouched();
       return;
     }
+
     const note: Note = this.noteForm.value;
-    this.noterService.createNote(note);
-    this.noteForm.reset();
-    this.sucessMessage = "Your notes added sucessfully!"
+
+    if (this.isEdit && this.selectedNote) {
+      note.id = this.selectedNote.id;
+      this.noteService.updateNote(note);
+      this.successMessage = 'Note updated successfully!';
+    } else {
+      this.noteService.createNote(note);
+      this.successMessage = 'Note added successfully!';
+    }
 
     setTimeout(() => {
-      this.sucessMessage = null;
+      this.successMessage = null;
       this.noteForm.reset();
-    },2000);
+      this.noteService.setEditable(false);
+      this.noteService.setSelectedNote(null);
+    }, 2000);
   }
- 
 
-  closeForm():void{
+  closeForm(): void {
+    this.noteService.setEditable(false);
+    this.noteService.setSelectedNote(null);
     this.close.emit();
   }
 }

@@ -3,9 +3,9 @@
     <form [formGroup]="noteForm" (ngSubmit)="onSubmit()"
         class="py-2 px-12 md:px-15 lg:px-20 lg:py-4 rounded-lg shadow-md bg-color">
         <h1 class="flex justify-center">Take a New Note </h1>
-        @if(sucessMessage){
+        @if(successMessage){
         <p class=" w-65 h-12 m-auto mt-3 flex justify-center items-center border rounded-md bg-green-300">
-            <i class="bi bi-check-circle me-2">{{ sucessMessage}}</i>
+            <i class="bi bi-check-circle me-2 ">{{ successMessage}}</i>
         </p>
         }
         <div class="mb-4 mt-4 md:w-80 lg:w-110">
@@ -14,10 +14,8 @@
                 class="w-100 h-10 border border-orange-300 rounded-md px-2 focus:outline-none focus:ring-2 focus:ring-orange-400">
             @if(noteForm.controls['title'].hasError('required') && noteForm.controls['title'].touched){
             <span class="text text-danger">Title is required</span>
-            } @else {
-            @if (noteForm.controls['title'].hasError('pattern')) {
+            } @else if (noteForm.controls['title'].hasError('pattern')) {
             <span class="text text-danger">Only letters and numbers allowed</span>
-            }
             }
         </div>
 
@@ -29,22 +27,19 @@
             <span class="text text-danger">Content is required</span>
             } @else if (noteForm.controls['content'].hasError('pattern')) {
             <span class="text text-danger">Only letters and numbers allowed</span>
-            } @else if (noteForm.controls['content'].hasError('minLength')) {
+            } @else if (noteForm.controls['content'].hasError('minlength')) {
             <span class="text text-danger">Enter at least 25 characters</span>
             }
-        
-
         </div>
 
         <!-- form submite button -->
-        <div class="flex justify-between">
-
+        <div class="flex justify-between md:pb-6">
             <!-- submit button -->
             <div class="border border-orange-300 rounded-md">
                 @if(!isEdit){
                 <div
                     class="w-24 md:w-30 h-10 bg-blue-300 items-center hover:bg-blue-400 rounded-md flex justify-center items-center">
-                    <button type="submit" class="w-24 md:w-30 h-10" [disabled]="noteForm.invalid" >
+                    <button type="submit" class="w-24 md:w-30 h-10">
                         Submit
                     </button>
                 </div>
@@ -53,12 +48,11 @@
                 @if(isEdit){
                 <div
                     class="w-24 md:w-30 bg-orange-300 items-center hover:bg-orange-400 rounded-md flex justify-center items-center">
-                    <button type="update" class="w-24 md:w-30 h-10">
+                    <button type="submit" class="w-24 md:w-30 h-10">
                         Update
                     </button>
                 </div>
                 }
-
                 }
             </div>
 
