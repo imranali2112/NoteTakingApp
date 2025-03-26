@@ -2,18 +2,23 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { NoteService } from '../../services/note.service';
 import { Note } from '../../interfaces/note';
 import { NoteFormComponent } from '../note-form/note-form.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-body',
   templateUrl: './body.component.html',
   styleUrl: './body.component.scss',
-  imports:[NoteFormComponent]
+  imports:[NoteFormComponent, NgxPaginationModule]
 })
 export class BodyComponent {
   isAddNote = false;
   notes: Note[] = [];
   isView?: Note | null;
   deleteMessage: string | null = null;
+  currentPage: number = 1;
+  pageSize: number = 6;
+ 
+
 
   constructor(private noteService: NoteService) {}
 
@@ -55,4 +60,7 @@ export class BodyComponent {
       this.deleteMessage = null;
     }, 2000);
   }
+
+  //pagiantion 
+  // const currentPage = 1
 }

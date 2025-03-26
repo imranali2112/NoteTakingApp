@@ -47,7 +47,7 @@ export class NoteFormComponent {
         [
           Validators.required,
           Validators.minLength(25),
-          Validators.pattern("^(?!^[0-9\\s]+$)[A-Za-z0-9'\\s]+$"),
+          Validators.pattern("^(?![0-9]+$).+$"),
         ],
       ],
     });

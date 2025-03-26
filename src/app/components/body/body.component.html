@@ -15,32 +15,36 @@
         <h5 class="mt-4">Number of Notes: {{ notes.length }}
         </h5>
         @if(deleteMessage){
-            <p class="w-60 h-12 bg-red-500 text-white m-auto flex justify-center items-center border rounded-md">
-                <i class="bi bi-trash">{{deleteMessage}}</i>
-            </p>
+        <p class="w-60 h-12 bg-red-500 text-white m-auto flex justify-center items-center border rounded-md">
+            <i class="bi bi-trash">{{deleteMessage}}</i>
+        </p>
         }
-        
+
 
         <!-- Notes card -->
         <div class="flex flex-wrap gap-10 md:mt-7">
 
-            @for(noteData of notes; track noteData.id){
-                <div class="w-80 p-4 border rounded-3xl shadow notes-card">
-                    <h4 class="ms-4">
-                        {{noteData.title}} 
-                        <!-- <i class="bi bi-pin-angle font-semibold bg-white p-1 ms-10 rounded-circle text-lg"></i> -->
-                    </h4>
-        
-                    <div class="flex justify-evenly pt-5 ms-3">
-                        <i (click)="viewNote(noteData)" class="bi bi-eye-fill cursor-pointer text-xl"></i>
-                        <i (click)="deleteNotes(noteData.id)" class="bi bi-trash cursor-pointer text-xl"></i>
-                        <i (click)="editNotes(noteData)"
-                            class="bi bi-pencil bg-white p-1 rounded-circle cursor-pointer text-xl"></i>
-                    </div>
+            @for(noteData of notes | paginate: {itemsPerPage: pageSize, currentPage: currentPage} ; track noteData.id){
+            <div class="w-80 p-4 border rounded-3xl shadow notes-card">
+                <h4 class="ms-4">
+                    {{noteData.title}}
+                    <!-- <i class="bi bi-pin-angle font-semibold bg-white p-1 ms-10 rounded-circle text-lg"></i> -->
+                </h4>
+
+                <div class="flex justify-evenly pt-5 ms-3">
+                    <i (click)="viewNote(noteData)" class="bi bi-eye-fill cursor-pointer text-xl"></i>
+                    <i (click)="deleteNotes(noteData.id)" class="bi bi-trash cursor-pointer text-xl"></i>
+                    <i (click)="editNotes(noteData)"
+                        class="bi bi-pencil bg-white p-1 rounded-circle cursor-pointer text-xl"></i>
                 </div>
+            </div>
             }
         </div>
-        
+    </div>
+
+    <!-- pagenation -->
+    <div class="pagination ms-12 md:ms-25">
+        <pagination-controls   (pageChange)="currentPage = $event"></pagination-controls>>
     </div>
 
     <div class="w-110 md:w-70 m-2 md:m-0 bg-orange-500">
@@ -49,14 +53,15 @@
             <div class="bg-white p-5 md:p-5 rounded-lg shadow-lg w-90 sm:w-1/2 max-h-[80vh] overflow-y-auto">
                 <h3 class="text-lg font-semibold">{{ isView.title }}</h3>
                 <p class="mt-2">{{ isView.content }}</p>
-                <div class="w-30 h-10 border rounded-lg flex items-center justify-center bg-orange-300 hover:bg-orange-400 mt-4">
+                <div
+                    class="w-30 h-10 border rounded-lg flex items-center justify-center bg-orange-300 hover:bg-orange-400 mt-4">
                     <button (click)="closeViewNote()" class="w-30 h-10"> Close</button>
                 </div>
             </div>
         </div>
         }
     </div>
-    
+
 
 
 </div>
